@@ -65,6 +65,19 @@
     <script>
         var searchCount = {{ results.totalResults }};
     </script>
+    {% set scopePackage = filters.package is defined ? filters.package : (filters.vendor is defined ? filters.vendor : '') %}
+    {% if searchScope is not empty or scopePackage %}
+        <p class="mb-3">
+            <span class="text-muted">Scope:</span>
+            {% if searchScope is not empty %}
+                <span class="badge bg-info text-dark">{{ searchScope }}</span>
+            {% endif %}
+            {% if scopePackage %}
+                <span class="badge bg-info text-dark">{{ filters.package is defined ? 'manual' : 'vendor' }}: {{ scopePackage }}</span>
+            {% endif %}
+            <a class="ms-2 small" href="{{ path('searchresult', {'q': q}) }}">Search all &times;</a>
+        </p>
+    {% endif %}
     {% if results.totalResults > 0 %}
         <h4>Showing hits <strong>{{ results.startingAtItem }} </strong>to <strong>{{ results.endingAtItem }}</strong> of <strong>{{ results.totalResults }}</strong></h4>
         <div class="row">
